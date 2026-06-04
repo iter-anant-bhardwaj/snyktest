@@ -1,6 +1,5 @@
 const express = require('express');
 const lodash = require('lodash');
-const serialize = require('node-serialize');
 const minimist = require('minimist');
 
 const app = express();
@@ -24,13 +23,12 @@ app.post('/merge', (req, res) => {
   res.json({ status: 'Merged successfully', target });
 });
 
-// Remote Code Execution (RCE) demonstration using node-serialize
+// Safe deserialization using native JSON.parse (prevents RCE)
 app.post('/unserialize', (req, res) => {
   if (req.body.data) {
     try {
-      // Insecure deserialization via node-serialize 0.0.4
-      // Input like '{"rce":"_$$ND_FUNC$$_function (){require(\'child_process\').exec(\'whoami\', function(error, stdout, stderr) { console.log(stdout) });}()"}' will execute code.
-      const obj = serialize.unserialize(req.body.data);
+      // Safe parsing via built-in JSON.parse
+      const obj = JSON.parse(req.body.data);
       res.send(`Unserialized object: ${JSON.stringify(obj)}`);
     } catch (e) {
       res.status(500).send(`Error: ${e.message}`);
