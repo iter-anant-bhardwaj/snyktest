@@ -48,3 +48,34 @@ The server will run on `http://localhost:3000`.
 
 - **Prototype Pollution endpoint**: `POST http://localhost:3000/merge` with JSON payload.
 - **RCE endpoint**: `POST http://localhost:3000/unserialize` with serialized payload (e.g., `{"rce":"_$$ND_FUNC$$_function (){console.log('Hacked');}()"}`).
+
+---
+
+## CI/CD Integration (GitHub Actions)
+
+This repository includes a GitHub Actions workflow that automatically scans for security vulnerabilities on every push or pull request to the `main` or `master` branches.
+
+### Setup Instructions
+
+To make this workflow function correctly, you must supply your Snyk API Token to GitHub:
+
+1. **Get your Snyk Token**:
+   - Log in to your [Snyk account](https://app.snyk.io/).
+   - Click on your profile in the bottom-left corner and go to **Account settings**.
+   - Copy your **API token**.
+
+2. **Add the Secret to GitHub**:
+   - Go to your GitHub repository.
+   - Navigate to **Settings** > **Secrets and variables** > **Actions**.
+   - Click **New repository secret**.
+   - Set the name to `SNYK_TOKEN` and paste your Snyk API token in the value field.
+   - Click **Add secret**.
+
+### Workflow Behavior
+The workflow runs two checks:
+- **Snyk Open Source (SCA)**: Scans external package dependencies (like `express`, `lodash`) for known vulnerabilities.
+- **Snyk Code (SAST)**: Scans source code (`index.js`) for coding vulnerabilities.
+
+> [!NOTE]
+> Since this project contains intentional vulnerabilities for training purposes, the GitHub Actions runs are expected to fail by design when vulnerabilities are found, effectively simulating a security quality gate.
+
