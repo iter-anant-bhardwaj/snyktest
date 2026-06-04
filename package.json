@@ -1,0 +1,15 @@
+{
+  "name": "snyk-vulnerable-demo",
+  "version": "1.0.0",
+  "description": "A simple JS project with vulnerable dependencies for Snyk training",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "4.16.0",
+    "lodash": "4.17.4",
+    "minimist": "1.2.0",
+    "node-serialize": "0.0.4"
+  }
+}
